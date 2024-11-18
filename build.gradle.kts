@@ -24,11 +24,15 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
+    implementation("org.springframework.data:spring-data-commons:2.7.18")
+    implementation("com.amazonaws:aws-java-sdk-dynamodb:1.12.714")
+    implementation("com.github.derjust:spring-data-dynamodb:5.2.0")
 	developmentOnly("org.springframework.boot:spring-boot-docker-compose")
 	runtimeOnly("org.postgresql:postgresql")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
 }
 
 kotlin {
