@@ -1,9 +1,9 @@
 services:
-  postgres:
-    image: 'postgres:latest'
+  mongodb:
+    image: 'mongo:latest'
     environment:
-      - 'POSTGRES_DB=mydatabase'
-      - 'POSTGRES_PASSWORD=secret'
-      - 'POSTGRES_USER=myuser'
+      - 'MONGO_INITDB_DATABASE=payments'
+      - 'MONGO_INITDB_ROOT_PASSWORD=secret'
+      - 'MONGO_INITDB_ROOT_USERNAME=root'
     ports:
-      - '5432'
+      - '27017'
