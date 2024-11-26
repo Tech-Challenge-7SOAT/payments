@@ -10,5 +10,5 @@ interface PaymentRepository : MongoRepository<Payment, String> {
     fun findByOrderId(orderId: String): Payment?
 
     @Query("{ 'orderId' : ?0 }")
-    fun updateByOrderId(orderId: String, payment: Payment): Payment?
+    fun updateByOrderId(orderId: String, payment: Payment): Payment
 }
