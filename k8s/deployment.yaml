@@ -38,5 +38,26 @@ spec:
         - name: http
           containerPort: 80
         imagePullPolicy: IfNotPresent
+        env:
+        - name: MONGO_USER
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secret
+              key: MONGO_USER
+        - name: MONGO_PASS
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secret
+              key: MONGO_PASS
+        - name: MONGO_CLUSTER
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secret
+              key: MONGO_CLUSTER
+        - name: MONGO_DB
+          valueFrom:
+            secretKeyRef:
+              name: mongo-secret
+              key: MONGO_DB
       nodeSelector:
         kubernetes.io/os: linux
