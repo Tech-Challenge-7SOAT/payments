@@ -5,8 +5,11 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.6"
 	kotlin("plugin.jpa") version "1.9.25"
 	id("org.sonarqube") version "6.0.1.5171"
-	id "jacoco"
-    id "org.sonarqube" version "3.5.0.2730”
+	jacoco
+}
+
+jacoco {
+    toolVersion = "0.8.10"
 }
 
 group = "com.techchallenge"
@@ -28,7 +31,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
+    developmentOnly("org.springframework.boot:spring-boot-docker-compose") 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
@@ -47,13 +50,20 @@ sonarqube {
 		property("sonar.organization", "tech-challenge-7soat")
         property("sonar.host.url", "https://sonarcloud.io/project/overview?id=Tech-Challenge-7SOAT_payments")
         property("sonar.login", System.getenv("SONAR_TOKEN"))
+		property("sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
     }
 }
 
-jacocoTestReport {
+tasks.jacocoTestReport {
+    dependsOn(tasks.test)
     reports {
-        xml.required = true
+        xml.required.set(true)  // Necessário para o SonarQube
+        html.required.set(true) // Opcional: Relatório em HTML
     }
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
 
 allOpen {
