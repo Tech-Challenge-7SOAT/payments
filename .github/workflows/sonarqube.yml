@@ -36,8 +36,4 @@ jobs:
       - name: SonarQube Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: |
-          ./gradlew sonarqube \
-            -Dsonar.projectKey=your_project_key \
-            -Dsonar.host.url=https://sonarcloud.io/summary/overall?id=Tech-Challenge-7SOAT_payments \
-            -Dsonar.login=$SONAR_TOKEN
+        run: ./gradlew sonarqube

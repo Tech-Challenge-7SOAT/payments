@@ -4,6 +4,7 @@ plugins {
 	id("org.springframework.boot") version "3.3.5"
 	id("io.spring.dependency-management") version "1.1.6"
 	kotlin("plugin.jpa") version "1.9.25"
+	id("org.sonarqube") version "6.0.1.5171"
 }
 
 group = "com.techchallenge"
@@ -35,6 +36,14 @@ kotlin {
 	compilerOptions {
 		freeCompilerArgs.addAll("-Xjsr305=strict")
 	}
+}
+
+sonarqube {
+    properties {
+        property("sonar.projectKey", "Tech-Challenge-7SOAT_payments")
+        property("sonar.host.url", "https://sonarcloud.io/project/overview?id=Tech-Challenge-7SOAT_payments")
+        property("sonar.login", System.getenv("SONAR_TOKEN")) // Lê do ambiente
+    }
 }
 
 allOpen {
