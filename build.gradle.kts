@@ -41,8 +41,9 @@ kotlin {
 sonarqube {
     properties {
         property("sonar.projectKey", "Tech-Challenge-7SOAT_payments")
+		property("sonar.organization", "tech-challenge-7soat")
         property("sonar.host.url", "https://sonarcloud.io/project/overview?id=Tech-Challenge-7SOAT_payments")
-        property("sonar.login", System.getenv("SONAR_TOKEN")) // Lê do ambiente
+        property("sonar.login", System.getenv("SONAR_TOKEN"))
     }
 }
 
