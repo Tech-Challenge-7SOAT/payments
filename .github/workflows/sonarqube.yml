@@ -18,18 +18,6 @@ jobs:
         with:
           java-version: 17
 
-      - name: Cache SonarQube
-        uses: actions/cache@v3
-        with:
-          path: ~/.sonar/cache
-          key: ${{ runner.os }}-sonar
-
-      - name: Set up Gradle
-        uses: gradle/gradle-build-action@v2
-        with:
-          gradle-version: 8.10.2
-          distribution: gradle-wrapper
-
       - name: Install Dependencies
         run: ./gradlew clean build -x test
 
