@@ -10,6 +10,7 @@ plugins {
 
 jacoco {
     toolVersion = "0.8.10"
+	reportsDirectory = layout.buildDirectory.dir("customJacocoReportDir")
 }
 
 group = "com.techchallenge"
@@ -57,13 +58,36 @@ sonarqube {
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
     reports {
-        xml.required.set(true)  // Necessário para o SonarQube
-        html.required.set(true) // Opcional: Relatório em HTML
+        xml.required = false
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
     }
 }
 
 tasks.test {
-    useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport)
+}
+
+tasks.jacocoTestCoverageVerification {
+    violationRules {
+        rule {
+            limit {
+                minimum = "0.5".toBigDecimal()
+            }
+        }
+
+        rule {
+            isEnabled = false
+            element = "CLASS"
+            includes = listOf("org.gradle.*")
+
+            limit {
+                counter = "LINE"
+                value = "TOTALCOUNT"
+                maximum = "0.3".toBigDecimal()
+            }
+        }
+    }
 }
 
 allOpen {
@@ -72,6 +96,6 @@ allOpen {
 	annotation("jakarta.persistence.Embeddable")
 }
 
-tasks.withType<Test> {
-	useJUnitPlatform()
-}
+// tasks.withType<Test> {
+// 	useJUnitPlatform()
+// }
