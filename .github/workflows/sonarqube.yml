@@ -24,6 +24,11 @@ jobs:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
 
+      - name: Set up Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+          distribution: gradle-wrapper
+
       - name: Install Dependencies
         run: ./gradlew clean build -x test
 
