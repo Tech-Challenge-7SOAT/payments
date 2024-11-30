@@ -5,6 +5,8 @@ plugins {
 	id("io.spring.dependency-management") version "1.1.6"
 	kotlin("plugin.jpa") version "1.9.25"
 	id("org.sonarqube") version "6.0.1.5171"
+	id "jacoco"
+    id "org.sonarqube" version "3.5.0.2730”
 }
 
 group = "com.techchallenge"
@@ -45,6 +47,12 @@ sonarqube {
 		property("sonar.organization", "tech-challenge-7soat")
         property("sonar.host.url", "https://sonarcloud.io/project/overview?id=Tech-Challenge-7SOAT_payments")
         property("sonar.login", System.getenv("SONAR_TOKEN"))
+    }
+}
+
+jacocoTestReport {
+    reports {
+        xml.required = true
     }
 }
 
