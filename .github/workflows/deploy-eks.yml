@@ -33,6 +33,21 @@
 #           chmod +x ./kubectl
 #           sudo mv ./kubectl /usr/local/bin/kubectl
 
+#       - name: Create Secret YAML
+#         run: |
+#           echo "
+#           apiVersion: v1
+#           kind: Secret
+#           metadata:
+#             name: mongo-secret
+#           type: Opaque
+#           data:
+#             MONGO_USER: $(echo -n '${{ secrets.MONGO_USER }}' | base64)
+#             MONGO_PASS: $(echo -n '${{ secrets.MONGO_PASS }}' | base64)
+#             MONGO_CLUSTER: $(echo -n '${{ secrets.MONGO_CLUSTER }}' | base64)
+#             MONGO_DB: $(echo -n '${{ secrets.MONGO_DB }}' | base64)
+#           " > mongo-secret.yaml
+
 #       - name: Deploy to EKS
 #         run: |
 #           kubectl apply -f k8s/deployment.yaml
