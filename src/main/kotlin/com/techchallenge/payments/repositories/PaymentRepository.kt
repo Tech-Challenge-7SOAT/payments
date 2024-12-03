@@ -3,7 +3,9 @@ package com.techchallenge.payments.repositories
 import com.techchallenge.payments.entities.Payment
 import org.springframework.data.mongodb.repository.MongoRepository
 import org.springframework.data.mongodb.repository.Query
+import org.springframework.stereotype.Repository
 
+@Repository
 interface PaymentRepository : MongoRepository<Payment, String> {
 
     @Query("{ 'orderId' : ?0 }")

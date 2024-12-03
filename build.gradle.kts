@@ -28,15 +28,15 @@ repositories {
 
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-mongodb")
-	implementation("org.mongodb:mongodb-driver-sync:4.11.0")
+    implementation("org.mongodb:mongodb-driver-sync:4.11.0")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
-    developmentOnly("org.springframework.boot:spring-boot-docker-compose") 
+    developmentOnly("org.springframework.boot:spring-boot-docker-compose")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-	testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
     testImplementation("org.mockito:mockito-core:5.5.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
 }
@@ -47,27 +47,34 @@ kotlin {
 	}
 }
 
-sonarqube {
-    properties {
-        property("sonar.projectKey", "Tech-Challenge-7SOAT_payments")
-		property("sonar.organization", "tech-challenge-7soat")
-        property("sonar.host.url", "https://sonarcloud.io/project/overview?id=Tech-Challenge-7SOAT_payments")
-        property("sonar.login", System.getenv("SONAR_TOKEN"))
-		property("sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml")
-    }
+allOpen {
+	annotation("jakarta.persistence.Entity")
+	annotation("jakarta.persistence.MappedSuperclass")
+	annotation("jakarta.persistence.Embeddable")
+}
+
+ tasks.withType<Test> {
+ 	useJUnitPlatform()
+ }
+
+jacoco {
+    toolVersion = "0.8.10"
 }
 
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
     reports {
-        xml.required = false
+        xml.required = true
         csv.required = false
-        html.outputLocation = layout.buildDirectory.dir("jacocoHtml")
     }
-}
-
-tasks.test {
-    finalizedBy(tasks.jacocoTestReport)
+    classDirectories.setFrom(
+        files(classDirectories.files.map {
+            fileTree(it) {
+                exclude("**/repositories/**")
+                exclude("**/domain/**")
+            }
+        })
+    )
 }
 
 tasks.jacocoTestCoverageVerification {
@@ -92,12 +99,21 @@ tasks.jacocoTestCoverageVerification {
     }
 }
 
-allOpen {
-	annotation("jakarta.persistence.Entity")
-	annotation("jakarta.persistence.MappedSuperclass")
-	annotation("jakarta.persistence.Embeddable")
+sonarqube {
+    properties {
+        property("sonar.sourceEncoding", "UTF-8")
+        property("sonar.sources", "src/main/kotlin")
+        property("sonar.tests", "src/test/kotlin")
+        property("sonar.projectKey", "Tech-Challenge-7SOAT_payments")
+        property("sonar.organization", "tech-challenge-7soat")
+        property("sonar.host.url", "https://sonarcloud.io")
+        property("sonar.login", System.getenv("SONAR_TOKEN"))
+        property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get().asFile}/reports/jacoco/test/jacocoTestReport.xml")
+
+        property("sonar.verbose", "true")
+    }
 }
 
-// tasks.withType<Test> {
-// 	useJUnitPlatform()
-// }
+tasks.sonarqube {
+    dependsOn(tasks.jacocoTestReport)
+}

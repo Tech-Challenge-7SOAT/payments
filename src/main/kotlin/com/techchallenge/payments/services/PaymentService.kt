@@ -2,6 +2,7 @@ package com.techchallenge.payments.services
 
 import com.techchallenge.payments.entities.Payment
 import com.techchallenge.payments.repositories.PaymentRepository
+import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service

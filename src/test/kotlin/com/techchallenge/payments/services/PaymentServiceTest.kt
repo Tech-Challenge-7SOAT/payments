@@ -1,17 +1,27 @@
 package com.techchallenge.payments.services
 
+import com.techchallenge.payments.PaymentsApplication
 import com.techchallenge.payments.entities.Payment
 import com.techchallenge.payments.repositories.PaymentRepository
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Profile
+import org.springframework.test.context.ContextConfiguration
 import java.math.BigDecimal
 
-class PaymentServiceTest(
-    private val service: PaymentService,
-    private val repository: PaymentRepository
-) {
+@Profile("test")
+@SpringBootTest(classes = [PaymentsApplication::class])
+class PaymentServiceTest {
+
+    @Autowired
+    private lateinit var service: PaymentService
+
+    @Autowired
+    private lateinit var repository: PaymentRepository
 
     private val document = Payment(
         id = "1",
