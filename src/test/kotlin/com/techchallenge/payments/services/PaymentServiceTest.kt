@@ -28,11 +28,15 @@ class PaymentServiceTest {
         // Inicializa o serviço com o repositório mockado
         service = PaymentService(repository)
 
-        // Configurações padrão dos mocks
+        // Configurações padrão dos mocks com tipo explícito
         `when`(repository.findByOrderId(document.orderId)).thenReturn(document)
-        `when`(repository.save(document)).thenReturn(document)
-        `when`(repository.updateByOrderId(document.orderId, document.copy(amount = BigDecimal.TEN)))
-            .thenReturn(document.copy(amount = BigDecimal.TEN))
+        `when`(repository.save(any(Payment::class.java))).thenReturn(document)
+        `when`(
+            repository.updateByOrderId(
+                eq(document.orderId),
+                any(Payment::class.java)
+            )
+        ).thenReturn(document.copy(amount = BigDecimal.TEN))
     }
 
     @Test
