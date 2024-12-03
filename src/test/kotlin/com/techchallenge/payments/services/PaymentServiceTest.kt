@@ -23,11 +23,8 @@ class PaymentServiceTest {
         amount = BigDecimal.ONE
     )
 
-    /**
-    * Prepares the mock repository with default behavior for the tests.
-    */
     @BeforeEach
-    private fun configureMockRepository() {
+    private fun setUp() {
         // Inicializa o serviço com o repositório mockado
         service = PaymentService(repository)
 
