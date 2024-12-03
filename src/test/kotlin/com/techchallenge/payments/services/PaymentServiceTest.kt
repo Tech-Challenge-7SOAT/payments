@@ -27,7 +27,7 @@ class PaymentServiceTest {
     * Prepares the mock repository with default behavior for the tests.
     */
     @BeforeEach
-    private fun setUp() {
+    private fun configureMockRepository() {
         // Inicializa o serviço com o repositório mockado
         service = PaymentService(repository)
 
