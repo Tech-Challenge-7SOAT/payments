@@ -1,29 +1,29 @@
 plugins {
-	kotlin("jvm") version "1.9.25"
-	kotlin("plugin.spring") version "1.9.25"
-	id("org.springframework.boot") version "3.3.5"
-	id("io.spring.dependency-management") version "1.1.6"
-	kotlin("plugin.jpa") version "1.9.25"
-	id("org.sonarqube") version "6.0.1.5171"
-	jacoco
+    kotlin("jvm") version "1.9.25"
+    kotlin("plugin.spring") version "1.9.25"
+    id("org.springframework.boot") version "3.3.5"
+    id("io.spring.dependency-management") version "1.1.6"
+    kotlin("plugin.jpa") version "1.9.25"
+    id("org.sonarqube") version "6.0.1.5171"
+    jacoco
 }
 
 jacoco {
     toolVersion = "0.8.10"
-	reportsDirectory = layout.buildDirectory.dir("customJacocoReportDir")
+    reportsDirectory = layout.buildDirectory.dir("customJacocoReportDir")
 }
 
 group = "com.techchallenge"
 version = "0.0.1-SNAPSHOT"
 
 java {
-	toolchain {
-		languageVersion = JavaLanguageVersion.of(21)
-	}
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
 }
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
@@ -39,23 +39,28 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
     testImplementation("org.mockito:mockito-core:5.5.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
+    testImplementation("io.mockk:mockk:1.13.13")
+    testImplementation("io.cucumber:cucumber-java:7.20.1")
+    testImplementation("io.cucumber:cucumber-junit:7.20.1")
+    testImplementation("org.junit.platform:junit-platform-suite-api:1.9.3")
+    testImplementation("io.rest-assured:rest-assured:5.5.0")
 }
 
 kotlin {
-	compilerOptions {
-		freeCompilerArgs.addAll("-Xjsr305=strict")
-	}
+    compilerOptions {
+        freeCompilerArgs.addAll("-Xjsr305=strict")
+    }
 }
 
 allOpen {
-	annotation("jakarta.persistence.Entity")
-	annotation("jakarta.persistence.MappedSuperclass")
-	annotation("jakarta.persistence.Embeddable")
+    annotation("jakarta.persistence.Entity")
+    annotation("jakarta.persistence.MappedSuperclass")
+    annotation("jakarta.persistence.Embeddable")
 }
 
- tasks.withType<Test> {
- 	useJUnitPlatform()
- }
+tasks.withType<Test> {
+    useJUnitPlatform()
+}
 
 jacoco {
     toolVersion = "0.8.10"
@@ -71,7 +76,8 @@ tasks.jacocoTestReport {
         files(classDirectories.files.map {
             fileTree(it) {
                 exclude("**/repositories/**")
-                exclude("**/domain/**")
+                exclude("**/entities/**")
+                exclude("**/test/**")
             }
         })
     )
@@ -108,7 +114,10 @@ sonarqube {
         property("sonar.organization", "tech-challenge-7soat")
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.login", System.getenv("SONAR_TOKEN"))
-        property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get().asFile}/reports/jacoco/test/jacocoTestReport.xml")
+        property(
+            "sonar.coverage.jacoco.xmlReportPaths",
+            "${layout.buildDirectory.get().asFile}/reports/jacoco/test/jacocoTestReport.xml"
+        )
 
         property("sonar.verbose", "true")
     }

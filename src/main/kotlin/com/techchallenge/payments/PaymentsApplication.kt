@@ -5,7 +5,7 @@ import org.springframework.boot.runApplication
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories
 
 @SpringBootApplication
-@EnableMongoRepositories
+@EnableMongoRepositories(basePackages = ["com.techchallenge.payments.repositories"])
 class PaymentsApplication
 
 fun main(args: Array<String>) {

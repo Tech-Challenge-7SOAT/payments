@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.*
@@ -12,6 +13,29 @@ import java.math.BigDecimal
 class PaymentServiceTest {
 
     @MockBean
+=======
+package com.techchallenge.payments.services
+
+import com.techchallenge.payments.PaymentsApplication
+import com.techchallenge.payments.entities.Payment
+import com.techchallenge.payments.repositories.PaymentRepository
+import io.mockk.mockk
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Test
+
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.BeforeEach
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo
+import org.springframework.boot.test.context.SpringBootTest
+import java.math.BigDecimal
+
+@SpringBootTest
+@AutoConfigureDataMongo
+internal class PaymentServiceTest {
+
+    private lateinit var service: PaymentService
+>>>>>>> f50d2eb (add BDD tests)
     private lateinit var repository: PaymentRepository
 
     private lateinit var service: PaymentService
@@ -24,6 +48,7 @@ class PaymentServiceTest {
     )
 
     @BeforeEach
+<<<<<<< HEAD
     private fun setUp() {
         // Inicializa o serviço com o repositório mockado
         service = PaymentService(repository)
@@ -34,6 +59,15 @@ class PaymentServiceTest {
         `when`(repository.updateByOrderId(document.orderId, document.copy(amount = BigDecimal.TEN)))
             .thenReturn(document.copy(amount = BigDecimal.TEN))
     }
+=======
+    fun setUp() {
+        repository = mockk()
+        service = PaymentService(repository)
+    }
+
+    @AfterEach
+    fun tearDown() = repository.deleteAll()
+>>>>>>> f50d2eb (add BDD tests)
 
     @Test
     fun find() {
