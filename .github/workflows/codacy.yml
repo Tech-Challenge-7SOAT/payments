@@ -1,4 +1,4 @@
-name: SonarQube Analysis
+name: Codacy Analysis
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  sonar-analysis:
+  codacy-analysis:
     runs-on: ubuntu-latest
 
     steps:
@@ -30,7 +30,9 @@ jobs:
       - name: Build and Test with JaCoCo
         run: ./gradlew clean build jacocoTestReport
 
-      - name: SonarQube Scan
+      - name: Upload Coverage to Codacy
         env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew sonarqube --info --warning-mode all
+          CODACY_PROJECT_TOKEN: ${{ secrets.CODACY_PROJECT_TOKEN }}
+        run: |
+          curl -Ls https://coverage.codacy.com/get.sh | bash
+          bash <(curl -Ls https://coverage.codacy.com/get.sh) report -r build/reports/jacoco
