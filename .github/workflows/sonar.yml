@@ -33,4 +33,4 @@ jobs:
       - name: SonarQube Scan
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew sonarqube --info --warning-mode all
+        run: ./gradlew sonarqube --info --warning-mode all -Dsonar.exclusions=src/kotlin/test/**,**/config/**,**/entities/**,**/repositories/**
