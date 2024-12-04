@@ -66,6 +66,10 @@ jacoco {
     toolVersion = "0.8.10"
 }
 
+jacoco {
+    toolVersion = "0.8.10"
+}
+
 tasks.jacocoTestReport {
     dependsOn(tasks.test)
     reports {
@@ -75,8 +79,9 @@ tasks.jacocoTestReport {
     classDirectories.setFrom(
         files(classDirectories.files.map {
             fileTree(it) {
-                exclude("**/repositories/**")
+                exclude("**/config/**")
                 exclude("**/entities/**")
+                exclude("**/repositories/**")
                 exclude("**/test/**")
             }
         })
@@ -114,15 +119,14 @@ sonarqube {
         property("sonar.organization", "tech-challenge-7soat")
         property("sonar.host.url", "https://sonarcloud.io")
         property("sonar.login", System.getenv("SONAR_TOKEN"))
-        property(
-            "sonar.coverage.jacoco.xmlReportPaths",
-            "${layout.buildDirectory.get().asFile}/reports/jacoco/test/jacocoTestReport.xml"
-        )
-
+        property("sonar.coverage.jacoco.xmlReportPaths", "${layout.buildDirectory.get().asFile}/reports/jacoco/test/jacocoTestReport.xml")
         property("sonar.verbose", "true")
     }
 }
 
+tasks.sonarqube {
+    dependsOn(tasks.jacocoTestReport)
+}
 tasks.sonarqube {
     dependsOn(tasks.jacocoTestReport)
 }
